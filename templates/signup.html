@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup</title>
+</head>
+<body>
+  <b>{{message}}</b>
+  <div>
+    <form action="/signup" method="POST">
+      <label for="fullname">Fullname</label>
+      <input id="fullname" name="fullname" type="text" required/>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required/>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required/>
+
+      <label for="verify_password">Verify Password</label>
+      <input id="verify_password" name="verify_password" type="password" required/>
+
+      <button>SUBMIT</button>
+    </form>
+  </div>
+</body>
+</html>
