@@ -3,18 +3,21 @@ from flask import redirect, render_template, request, url_for
 from app import app
 from constants import FAILURE_STATUS, SUCCESS_STATUS
 from models import LoginActivity, User
-from utils import check_if_ip_can_login, handle_failed_login
+from utils import (
+    get_previous_login_attempts, check_if_ip_can_login, handle_failed_login)
 from validators import validate_password
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login_page():
     if request.method == 'GET':
+        request_args = request.args
         if not check_if_ip_can_login(request.remote_addr):
             return 'You cannot login at this time, wait 5 minutes from previous ' \
                    'attempt'
 
-        return render_template('login.html')
+        return render_template(
+            'login.html', message=request_args.get('message'))
 
     elif request.method == 'POST':
         form_data = request.form
@@ -42,9 +45,10 @@ def render_login_page():
             )
             login_activity.save()
 
-            return render_template(
-                'login.html',
-                message='Invalid login credentials')
+            return redirect(
+                url_for('render_login_page',
+                        message='Invalid login credentials')
+            )
 
         login_activity = LoginActivity(
             email=email, ip_address=ip_address, status=status
@@ -90,3 +94,16 @@ def render_signup_page():
 @app.route('/success')
 def render_success_page():
     return render_template('success.html')
+
+
+@app.route('/login-restriction')
+def render_login_restriction_page():
+    request_ip = request.remote_addr
+    previous_attempts = get_previous_login_attempts(request_ip)
+
+    records = previous_attempts['records']
+
+    return render_template(
+        'login_restriction.html',
+        last_login_time=records[0]['created_at'].isoformat()
+    )

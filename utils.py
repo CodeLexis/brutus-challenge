@@ -15,8 +15,6 @@ def check_if_ip_can_login(ip_address):
     failed_count = previous_attempts['failed']
     records = previous_attempts['records']
 
-    print(failed_count, records[0]['created_at'])
-
     if failed_count == app.config['MAX_LOGIN_ATTEMPTS']:
         last_activity = records[0]
         seconds_since_last_login_activity = (
