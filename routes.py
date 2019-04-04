@@ -104,5 +104,6 @@ def render_login_restriction_page():
 
     return render_template(
         'login_restriction.html',
-        last_login_time=records[0]['created_at'].isoformat()
+        last_login_time=records[0]['created_at'].isoformat(),
+        rest_period=app.config['LOGIN_REST_PERIOD_MINUTES']
     )

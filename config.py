@@ -2,6 +2,7 @@ import os
 
 DEBUG = True
 
+LOGIN_REST_PERIOD_MINUTES = 5
 LOGIN_REST_PERIOD_SECONDS = 5 * 60
 MAIL_SENDER = ('BRUTUS', 'decave12357@gmail.com')
 MAIL_SERVER = 'smtp.gmail.com'
