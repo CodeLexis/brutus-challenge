@@ -3,25 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Signup</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-  <b>{{message}}</b>
+  <div class="alert alert-warning" role="alert">
+    {{message}}
+  </div>
   <div>
+    <div style="margin: 25pt; padding: 10pt; border: 1px solid grey; border-radius: 5pt">
+
     <form action="/signup" method="POST">
-      <label for="fullname">Fullname</label>
-      <input id="fullname" name="fullname" type="text" required/>
+      <div class="form-group">
+        <label for="fullname">Fullname</label>
+        <input id="fullname" class="form-control" name="fullname" type="text" required/>
+      </div>
 
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required/>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" name="email" type="email" required/>
+      </div>
 
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" required/>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" class="form-control" name="password" type="password" required/>
+      </div>
 
-      <label for="verify_password">Verify Password</label>
-      <input id="verify_password" name="verify_password" type="password" required/>
+      <div class="form-group">
+        <label for="verify_password">Verify Password</label>
+        <input id="verify_password" class="form-control" name="verify_password" type="password" required/>
+      </div>
 
-      <button>SUBMIT</button>
+      <button type="submit" class="btn btn-primary">SUBMIT</button>
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </div>
 </body>
 </html>
