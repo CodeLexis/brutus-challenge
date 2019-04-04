@@ -36,6 +36,10 @@ class LoginActivity(object):
 
     @staticmethod
     def find(kw):
+        return db.login_activities.find(kw)
+
+    @staticmethod
+    def find_one(kw):
         return db.login_activities.find_one(kw)
 
 
@@ -72,7 +76,7 @@ class User(object):
         db.users.insert_one(self.data)
 
     @staticmethod
-    def find(kw):
+    def find_one(kw):
         data = db.users.find_one(kw)
 
         if data:

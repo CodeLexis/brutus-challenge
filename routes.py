@@ -1,15 +1,19 @@
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, url_for
 
 from app import app
 from constants import FAILURE_STATUS, SUCCESS_STATUS
 from models import LoginActivity, User
-from utils import get_previous_login_attempt, handle_failed_login
+from utils import check_if_ip_can_login, handle_failed_login
 from validators import validate_password
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def render_login_page():
     if request.method == 'GET':
+        if not check_if_ip_can_login(request.remote_addr):
+            return 'You cannot login at this time, wait 5 minutes from previous ' \
+                   'attempt'
+
         return render_template('login.html')
 
     elif request.method == 'POST':
@@ -21,20 +25,33 @@ def render_login_page():
         email = form_data['email']
         password = form_data['password']
 
-        user = User.find({'email': email})
+        user = User.find_one({'email': email})
 
-        if user is None or user.verify_password(password):
+        if user is None:
+            return render_template(
+                'login.html',
+                message='Email does not exist')
+
+        if not user.verify_password(password):
             status = FAILURE_STATUS
+
             handle_failed_login(email, ip_address)
 
-            return redirect('/login')
+            login_activity = LoginActivity(
+                email=email, ip_address=ip_address, status=status
+            )
+            login_activity.save()
+
+            return render_template(
+                'login.html',
+                message='Invalid login credentials')
 
         login_activity = LoginActivity(
             email=email, ip_address=ip_address, status=status
         )
         login_activity.save()
 
-        return render_template('success.html')
+        return redirect('/success')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -67,4 +84,9 @@ def render_signup_page():
 
         user.save()
 
-        return render_template('success.html')
+        return redirect(url_for('render_success_page'))
+
+
+@app.route('/success')
+def render_success_page():
+    return render_template('success.html')
