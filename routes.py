@@ -13,8 +13,7 @@ def render_login_page():
     if request.method == 'GET':
         request_args = request.args
         if not check_if_ip_can_login(request.remote_addr):
-            return 'You cannot login at this time, wait 5 minutes from previous ' \
-                   'attempt'
+            return redirect('/login-restriction')
 
         return render_template(
             'login.html', message=request_args.get('message'))
