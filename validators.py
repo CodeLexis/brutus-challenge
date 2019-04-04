@@ -20,3 +20,6 @@ def validate_password(password):
         raise ValueError('Invalid password')
 
     return True
+
+
+# validate_password('PAssword123412341234@$@')

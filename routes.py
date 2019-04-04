@@ -3,7 +3,8 @@ from flask import redirect, render_template, request
 from app import app
 from constants import FAILURE_STATUS, SUCCESS_STATUS
 from models import LoginActivity, User
-from utils import handle_failed_login
+from utils import get_previous_login_attempt, handle_failed_login
+from validators import validate_password
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -22,7 +23,7 @@ def render_login_page():
 
         user = User.find({'email': email})
 
-        if user is not None and user.verify_password(password):
+        if user is None or user.verify_password(password):
             status = FAILURE_STATUS
             handle_failed_login(email, ip_address)
 
@@ -53,7 +54,10 @@ def render_signup_page():
             return render_template(
                 'signup.html', message='Passwords do not match')
 
-        print(password)
+        try:
+            validate_password(password)
+        except ValueError:
+            return render_template('signup.html', message='Invalid password')
 
         user = User(
             fullname=fullname,

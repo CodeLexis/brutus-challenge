@@ -74,7 +74,6 @@ class User(object):
     @staticmethod
     def find(kw):
         data = db.users.find_one(kw)
-        print(data)
 
         if data:
             return User(hash_password=False, **data)
